@@ -15,7 +15,6 @@ Including another URLconf
 """
 from drf_spectacular.views import (
     SpectacularAPIView,
-    SpectacularRedocView,
     SpectacularSwaggerView,
 )
 from django.contrib import admin
@@ -28,6 +27,5 @@ urlpatterns = [
         'api/docs/',
         SpectacularSwaggerView.as_view(url_name='api-schema'),
         name='api-docs',
-    ),
-
+    )
 ]
