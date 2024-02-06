@@ -80,7 +80,7 @@ class PrivateRecipeApiTests(TestCase):
 
     def test_recipe_list_limited_to_user(self):
         """Test retrieving recipes for user"""
-        other_user = create_user(email='other@example.com',password='testt123')
+        other_user = create_user(email='other@example.com', password='testt123')
         create_recipe(user=other_user)
         create_recipe(user=self.user)
 
@@ -108,7 +108,7 @@ class PrivateRecipeApiTests(TestCase):
             'time_minutes': 30,
             'price': Decimal('5.99'),
         }
-        res = self.client.post(RECIPE_URL, payload)  #api/recipe/recipes/
+        res = self.client.post(RECIPE_URL, payload)  # api/recipe/recipes/
 
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         recipe = Recipe.objects.get(id=res.data['id'])
@@ -125,7 +125,7 @@ class PrivateRecipeApiTests(TestCase):
             link=original_link,
         )
 
-        payload = {'title':'New Recipe title'}
+        payload = {'title' : 'New Recipe title'}
         url = detail_url(recipe.id)
         res = self.client.patch(url, payload)
 
