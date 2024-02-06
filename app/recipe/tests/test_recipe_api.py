@@ -80,7 +80,10 @@ class PrivateRecipeApiTests(TestCase):
 
     def test_recipe_list_limited_to_user(self):
         """Test retrieving recipes for user"""
-        other_user = create_user(email='other@example.com', password='testt123')
+        other_user = create_user(
+            email='other@example.com',
+            password='testt123'
+            )
         create_recipe(user=other_user)
         create_recipe(user=self.user)
 
@@ -125,7 +128,7 @@ class PrivateRecipeApiTests(TestCase):
             link=original_link,
         )
 
-        payload = {'title' : 'New Recipe title'}
+        payload = {'title': 'New Recipe title'}
         url = detail_url(recipe.id)
         res = self.client.patch(url, payload)
 
