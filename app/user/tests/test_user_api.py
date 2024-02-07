@@ -3,9 +3,10 @@ Test for user API.
 """
 from django.test import TestCase
 from django.contrib.auth import get_user_model
+from django.urls import reverse
+
 from rest_framework.test import APIClient
 from rest_framework import status
-from django.urls import reverse
 
 CREATE_USER_URL = reverse('user:create')
 TOKEN_URL = reverse('user:token')
@@ -92,6 +93,14 @@ class PublicUserApiTests(TestCase):
         self.assertNotIn('token', res.data)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
+    def test_create_token_email_not_found(self):
+        """Test error returned if user not found for given email."""
+        payload = {'email': 'test@example.com', 'password': 'pass123'}
+        res = self.client.post(TOKEN_URL, payload)
+
+        self.assertNotIn('token', res.data)
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
     def test_create_token_blank_password(self):
         """Test that token is not created if password is blank."""
         payload = {'email': 'test@example.com', 'password': ''}
@@ -100,7 +109,7 @@ class PublicUserApiTests(TestCase):
         self.assertNotIn('token', res.data)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_retrive_user_unauthorized(self):
+    def test_retrieve_user_unauthorized(self):
         """Test that authentication is required for users."""
         res = self.client.get(ME_URL)
 

@@ -61,10 +61,8 @@ class PrivateTagsApiTests(TestCase):
 
     def test_tags_limited_to_user(self):
         """Test that tags returned are for the authenticated user"""
-        user2 = create_user(
-            email='user2@example.com',
-            password='testpass123'
-        )
+        user2 = create_user(email='user2@example.com')
+
         Tag.objects.create(user=user2, name='Fruity')
         tag = Tag.objects.create(user=self.user, name='Comfort Food')
 
@@ -80,12 +78,12 @@ class PrivateTagsApiTests(TestCase):
         tag = Tag.objects.create(user=self.user, name='After Dinner')
 
         payload = {'name': 'Dessert'}
-
         url = detail_url(tag.id)
         res = self.client.patch(url, payload)
 
         tag.refresh_from_db()
         self.assertEqual(res.status_code, status.HTTP_200_OK)
+
         self.assertEqual(tag.name, payload['name'])
 
     def test_delete_tag(self):
@@ -97,4 +95,4 @@ class PrivateTagsApiTests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
         tags = Tag.objects.filter(user=self.user)
-        self.assertFalse(tags.filter(id=tag.id).exists())
+        self.assertFalse(tags.exists())

@@ -172,7 +172,7 @@ class PrivateRecipeApiTests(TestCase):
 
         payload = {'user': new_user.id}
         url = detail_url(recipe.id)
-        self.client.put(url, payload)
+        self.client.patch(url, payload)
 
         recipe.refresh_from_db()
         self.assertEqual(recipe.user, self.user)
@@ -204,11 +204,7 @@ class PrivateRecipeApiTests(TestCase):
             'title': 'Thai Prawn Curry',
             'time_minutes': 30,
             'price': Decimal('2.50'),
-            'tags': [{
-                'name': 'Thai'
-            }, {
-                'name': 'Dinner'
-            }],
+            'tags': [{'name': 'Thai'}, {'name': 'Dinner'}],
         }
         res = self.client.post(RECIPE_URL, payload, format='json')
 
@@ -230,18 +226,14 @@ class PrivateRecipeApiTests(TestCase):
             'title': 'Pongal',
             'time_minutes': 60,
             'price': Decimal('4.50'),
-            'tags': [{
-                'name': 'Indian'
-            }, {
-                'name': 'Breakfast'
-            }],
+            'tags': [{'name': 'Indian'}, {'name': 'Breakfast'}]
         }
         res = self.client.post(RECIPE_URL, payload, format='json')
 
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-        recipe = Recipe.objects.filter(user=self.user)
-        self.assertEqual(recipe.count(), 1)
-        recipe = recipe[0]
+        recipes = Recipe.objects.filter(user=self.user)
+        self.assertEqual(recipes.count(), 1)
+        recipe = recipes[0]
         self.assertEqual(recipe.tags.count(), 2)
         self.assertIn(tag_indian, recipe.tags.all())
         for tag in payload['tags']:
@@ -255,8 +247,7 @@ class PrivateRecipeApiTests(TestCase):
         """Test creating a tag on update"""
         recipe = create_recipe(user=self.user)
 
-        payload = {
-            'tags': [{'name': 'Lunch'}]}
+        payload = {'tags': [{'name': 'Lunch'}]}
         url = detail_url(recipe.id)
         res = self.client.patch(url, payload, format='json')
 
