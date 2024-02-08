@@ -1,7 +1,6 @@
 """
 Serializers for recipe api
 """
-from math import e
 from rest_framework import serializers
 
 from core.models import (
