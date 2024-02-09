@@ -2,6 +2,7 @@ FROM python:3.9-alpine3.13
 LABEL maintainer="Hakim_dev"
 
 ENV PYTHONUNBUFFERED 1
+
 COPY ./requirement.txt /tmp/requirement.txt
 COPY ./requirements.dev.txt /tmp/requirements.dev.txt
 COPY ./scripts /scripts
