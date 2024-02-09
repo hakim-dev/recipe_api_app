@@ -7,6 +7,7 @@ from drf_spectacular.utils import (
     OpenApiParameter,
     OpenApiTypes,
 )
+
 from rest_framework import (
     viewsets,
     mixins,
@@ -30,14 +31,14 @@ from recipe import serializers
         parameters=[
             OpenApiParameter(
                 'tags',
-                type=OpenApiTypes.STR,
+                OpenApiTypes.STR,
                 description='Comma separated list of IDs to filter',
             ),
             OpenApiParameter(
                 'ingredients',
-                type=OpenApiTypes.STR,
+                OpenApiTypes.STR,
                 description='Comma separated list of ingredient IDs to filter',
-            )
+            ),
         ]
     )
 )
@@ -99,7 +100,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         parameters=[
             OpenApiParameter(
                 'assigned_only',
-                type=OpenApiTypes.INT, enum=[0, 1],
+                OpenApiTypes.INT, enum=[0, 1],
                 description='Filter by items assigned to recipes',
             )
         ]

@@ -116,10 +116,10 @@ class PrivateTagsApiTests(TestCase):
 
         res = self.client.get(TAGS_URL, {'assigned_only': 1})
 
-        serializer1 = TagSerializer(tag1)
-        serializer2 = TagSerializer(tag2)
-        self.assertIn(serializer1.data, res.data)
-        self.assertNotIn(serializer2.data, res.data)
+        s1 = TagSerializer(tag1)
+        s2 = TagSerializer(tag2)
+        self.assertIn(s1.data, res.data)
+        self.assertNotIn(s2.data, res.data)
 
     def test_filtered_tags_unique(self):
         """Test that filtered tags are unique"""
